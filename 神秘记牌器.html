@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=GB2312">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ÉñÃØµÄ¼ÇÅÆÆ÷</title>
+    <title>ç¥ç§˜çš„è®°ç‰Œå™¨</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     
     <style>
-        /* »ù´¡ÑùÊ½£¬±ÜÃâÒÀÀµTailwind¿ÉÄÜµÄ³åÍ» */
+        /* åŸºç¡€æ ·å¼ï¼Œé¿å…ä¾èµ–Tailwindå¯èƒ½çš„å†²çª */
         .card-container {
             perspective: 1000px;
             display: inline-block;
@@ -35,11 +35,11 @@
         }
         .card-back {
             background-color: #6B46C1;
-            z-index: 2; /* ±³Ãæ³õÊ¼ÔÚÉÏ·½ */
+            z-index: 2; /* èƒŒé¢åˆå§‹åœ¨ä¸Šæ–¹ */
         }
         .card-front {
             transform: rotateY(180deg);
-            z-index: 1; /* ÕıÃæ³õÊ¼ÔÚÏÂ·½ */
+            z-index: 1; /* æ­£é¢åˆå§‹åœ¨ä¸‹æ–¹ */
         }
         .card-img {
             width: 100%;
@@ -50,13 +50,13 @@
         .card-row {
             display: flex;
             justify-content: center;
-            margin-bottom: 15px; /* ĞĞ¼ä¾à */
+            margin-bottom: 15px; /* è¡Œé—´è· */
         }
         .card-row > div {
-            margin: 0 7.5px; /* ÁĞ¼ä¾à£¨×Ü15px£© */
+            margin: 0 7.5px; /* åˆ—é—´è·ï¼ˆæ€»15pxï¼‰ */
         }
         #selectionPanel {
-            z-index: 100; /* È·±£Ãæ°åÔÚ×îÉÏ²ã */
+            z-index: 100; /* ç¡®ä¿é¢æ¿åœ¨æœ€ä¸Šå±‚ */
         }
         #selectionGrid {
             display: grid;
@@ -69,7 +69,7 @@
             object-fit: cover;
             cursor: pointer;
         }
-        /* ĞÂÔöÊäÈë¿òÑùÊ½ÓÅ»¯ */
+        /* æ–°å¢è¾“å…¥æ¡†æ ·å¼ä¼˜åŒ– */
         .input-group {
             margin-bottom: 15px;
         }
@@ -92,97 +92,97 @@
             border-color: #6B46C1;
             box-shadow: 0 0 0 2px rgba(107, 70, 193, 0.2);
         }
-        /* 4¡Á5²¼¾ÖµÄÌØÊâÑùÊ½ */
+        /* 4Ã—5å¸ƒå±€çš„ç‰¹æ®Šæ ·å¼ */
         .layout-4x5 .card {
             width: 60px;
             height: 80px;
         }
         .layout-4x5 .card-row {
-            margin-bottom: 2px; /* ĞĞ¼ä¾àËõĞ¡Îª10 */
+            margin-bottom: 2px; /* è¡Œé—´è·ç¼©å°ä¸º10 */
         }
         .layout-4x5 .card-row > div {
-            margin: 0 2px; /* ÁĞ¼ä¾àËõĞ¡Îª2£¨×Ü¼ä¾à£© */
+            margin: 0 2px; /* åˆ—é—´è·ç¼©å°ä¸º2ï¼ˆæ€»é—´è·ï¼‰ */
         }
     </style>
 </head>
 <body>
     <div id="loginSection" style="max-width: 300px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 4px;">
-        <h1 style="text-align: center; color: #6B46C1;">ÉñÃØµÄ¼ÇÅÆÆ÷</h1>
-        <!-- ÕËºÅÊäÈë¿ò -->
+        <h1 style="text-align: center; color: #6B46C1;">ç¥ç§˜çš„è®°ç‰Œå™¨</h1>
+        <!-- è´¦å·è¾“å…¥æ¡† -->
         <div class="input-group">
-            <label for="username">ÕËºÅ£º</label>
-            <input type="text" id="username" placeholder="ÇëÊäÈëÕËºÅ">
+            <label for="username">è´¦å·ï¼š</label>
+            <input type="text" id="username" placeholder="è¯·è¾“å…¥è´¦å·">
         </div>
-        <!-- ÃÜÂëÊäÈë¿ò -->
+        <!-- å¯†ç è¾“å…¥æ¡† -->
         <div class="input-group">
-            <label for="password">ÃÜÂë£º</label>
-            <input type="password" id="password" placeholder="ÇëÊäÈëÃÜÂë">
+            <label for="password">å¯†ç ï¼š</label>
+            <input type="password" id="password" placeholder="è¯·è¾“å…¥å¯†ç ">
         </div>
-        <button id="loginBtn" style="width: 100%; padding: 8px; background: #6B46C1; color: white; border: none; border-radius: 4px; cursor: pointer;">µÇÂ¼</button>
+        <button id="loginBtn" style="width: 100%; padding: 8px; background: #6B46C1; color: white; border: none; border-radius: 4px; cursor: pointer;">ç™»å½•</button>
     </div>
 
     <div id="cardSection" style="display: none; max-width: 800px; margin: 0 auto; padding: 20px;">
-        <h1 style="color: #6B46C1;">ÉñÃØµÄ¼ÇÅÆÆ÷</h1>
+        <h1 style="color: #6B46C1;">ç¥ç§˜çš„è®°ç‰Œå™¨</h1>
         <div style="margin: 15px 0;">
-            <button class="layout-btn" data-rows="2" data-cols="3" style="padding: 5px 10px; background: #6B46C1; color: white; border: none; border-radius: 4px; margin-right: 5px;">2¡Á3</button>
-            <button class="layout-btn" data-rows="3" data-cols="3" style="padding: 5px 10px; background: #ccc; border: none; border-radius: 4px; margin-right: 5px;">3¡Á3</button>
-            <button class="layout-btn" data-rows="3" data-cols="4" style="padding: 5px 10px; background: #ccc; border: none; border-radius: 4px; margin-right: 5px;">3¡Á4</button>
-            <button class="layout-btn" data-rows="4" data-cols="4" style="padding: 5px 10px; background: #ccc; border: none; border-radius: 4px; margin-right: 5px;">4¡Á4</button>
-            <button class="layout-btn" data-rows="4" data-cols="5" style="padding: 5px 10px; background: #ccc; border: none; border-radius: 4px; margin-right: 5px;">4¡Á5</button>
-            <button id="backBtn" style="padding: 5px 10px; background: #718096; color: white; border: none; border-radius: 4px; margin-right: 5px;">»ØÍË</button>
-            <button id="resetBtn" style="padding: 5px 10px; background: #e53e3e; color: white; border: none; border-radius: 4px;">ÖØÖÃ</button>
+            <button class="layout-btn" data-rows="2" data-cols="3" style="padding: 5px 10px; background: #6B46C1; color: white; border: none; border-radius: 4px; margin-right: 5px;">2Ã—3</button>
+            <button class="layout-btn" data-rows="3" data-cols="3" style="padding: 5px 10px; background: #ccc; border: none; border-radius: 4px; margin-right: 5px;">3Ã—3</button>
+            <button class="layout-btn" data-rows="3" data-cols="4" style="padding: 5px 10px; background: #ccc; border: none; border-radius: 4px; margin-right: 5px;">3Ã—4</button>
+            <button class="layout-btn" data-rows="4" data-cols="4" style="padding: 5px 10px; background: #ccc; border: none; border-radius: 4px; margin-right: 5px;">4Ã—4</button>
+            <button class="layout-btn" data-rows="4" data-cols="5" style="padding: 5px 10px; background: #ccc; border: none; border-radius: 4px; margin-right: 5px;">4Ã—5</button>
+            <button id="backBtn" style="padding: 5px 10px; background: #718096; color: white; border: none; border-radius: 4px; margin-right: 5px;">å›é€€</button>
+            <button id="resetBtn" style="padding: 5px 10px; background: #e53e3e; color: white; border: none; border-radius: 4px;">é‡ç½®</button>
         </div>
         <div id="cardContainer"></div>
 
-        <!-- Ñ¡ÔñÃæ°å -->
+        <!-- é€‰æ‹©é¢æ¿ -->
         <div id="selectionPanel" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);">
             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; max-width: 500px; width: 90%;">
-                <h3>Ñ¡ÔñÍ¼Æ¬£¨5¡Á5£©</h3>
+                <h3>é€‰æ‹©å›¾ç‰‡ï¼ˆ5Ã—5ï¼‰</h3>
                 <div id="selectionGrid"></div>
-                <button id="closeSelectionBtn" style="width: 100%; padding: 8px; margin-top: 10px; background: #ccc; border: none; border-radius: 8px;">È¡Ïû</button>
+                <button id="closeSelectionBtn" style="width: 100%; padding: 8px; margin-top: 10px; background: #ccc; border: none; border-radius: 8px;">å–æ¶ˆ</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Í¼Æ¬Â·¾¶ÅäÖÃ
-        const backImagePath = "imgs/00-±³Ãæ.jpg";
+        // å›¾ç‰‡è·¯å¾„é…ç½®
+        const backImagePath = "imgs/00-èƒŒé¢.jpg";
         const imagePaths = [
-            "imgs/01-Ñ¡ÃÀ»Êºó.jpg",
-            "imgs/02-Ò»´úÌìºó.jpg",
-            "imgs/03-×ÏÏ¼ÏÉ×Ó.jpg",
-            "imgs/04-ÁøÆ®Æ®.jpg",
-            "imgs/05-ÄôĞ¡Ù».jpg",
-            "imgs/06-°¢Ê«Âê.jpg",
-            "imgs/07-°×ËØÕê.jpg",
-            "imgs/08-Ñ¾µ°¶ù.jpg",
-            "imgs/09-º£Ñà.jpg",
-            "imgs/10-Çï¾Õ.jpg",
-            "imgs/11-Í¯ĞÄ.jpg",
-            "imgs/12-ĞÂÄï×Ó.jpg",
-            "imgs/13-ŞÈ¾ı.jpg",
-            "imgs/14-ºìÒÂ·ş.jpg",
-            "imgs/15-ºìÒÂ½ÌÖ÷.jpg",
-            "imgs/16-³ªÏ·.jpg",
-            "imgs/17-¾²¾².jpg",
-            "imgs/18-ÊçÕä.jpg",
-            "imgs/19-¸ÛĞÇ.jpg",
-            "imgs/20-¸ßÆôÀ¼.jpg",
-            "imgs/21-°×É´.jpg",
-            "imgs/22-³ÂÊéæÃ.jpg",
-            "imgs/23-¹ÅÀö.jpg",
-            "imgs/24-ºÚÉ´.jpg",
-            "imgs/25-Ó¢×Ë.jpg"
+            "imgs/01-é€‰ç¾çš‡å.jpg",
+            "imgs/02-ä¸€ä»£å¤©å.jpg",
+            "imgs/03-ç´«éœä»™å­.jpg",
+            "imgs/04-æŸ³é£˜é£˜.jpg",
+            "imgs/05-è‚å°å€©.jpg",
+            "imgs/06-é˜¿è¯—ç›.jpg",
+            "imgs/07-ç™½ç´ è´.jpg",
+            "imgs/08-ä¸«è›‹å„¿.jpg",
+            "imgs/09-æµ·ç‡•.jpg",
+            "imgs/10-ç§‹èŠ.jpg",
+            "imgs/11-ç«¥å¿ƒ.jpg",
+            "imgs/12-æ–°å¨˜å­.jpg",
+            "imgs/13-å¥•å›.jpg",
+            "imgs/14-çº¢è¡£æœ.jpg",
+            "imgs/15-çº¢è¡£æ•™ä¸».jpg",
+            "imgs/16-å”±æˆ.jpg",
+            "imgs/17-é™é™.jpg",
+            "imgs/18-æ·‘ç.jpg",
+            "imgs/19-æ¸¯æ˜Ÿ.jpg",
+            "imgs/20-é«˜å¯å…°.jpg",
+            "imgs/21-ç™½çº±.jpg",
+            "imgs/22-é™ˆä¹¦å©·.jpg",
+            "imgs/23-å¤ä¸½.jpg",
+            "imgs/24-é»‘çº±.jpg",
+            "imgs/25-è‹±å§¿.jpg"
         ];
 
-        // È«¾Ö±äÁ¿
+        // å…¨å±€å˜é‡
         let currentCards = [];
         let selectedCardIndex = -1;
         let history = [];
         let currentRows = 2;
         let currentCols = 3;
 
-        // DOMÔªËØ
+        // DOMå…ƒç´ 
         const loginSection = document.getElementById('loginSection');
         const cardSection = document.getElementById('cardSection');
         const loginBtn = document.getElementById('loginBtn');
@@ -196,7 +196,7 @@
         const selectionGrid = document.getElementById('selectionGrid');
         const layoutBtns = document.querySelectorAll('.layout-btn');
 
-        // µÇÂ¼¹¦ÄÜ
+        // ç™»å½•åŠŸèƒ½
         loginBtn.onclick = function() {
             if (usernameInput.value === 'admin' && passwordInput.value === '147258') {
                 loginSection.style.display = 'none';
@@ -204,16 +204,16 @@
                 createCards(2, 3);
                 initSelectionPanel();
             } else {
-                alert('ÕËºÅ»òÃÜÂë´íÎó');
+                alert('è´¦å·æˆ–å¯†ç é”™è¯¯');
             }
         };
 
-        // ´´½¨ÅÆ
+        // åˆ›å»ºç‰Œ
         function createCards(rows, cols) {
-            // ÒÆ³ıÖ®Ç°¿ÉÄÜÌí¼ÓµÄ4x5²¼¾ÖÀà
+            // ç§»é™¤ä¹‹å‰å¯èƒ½æ·»åŠ çš„4x5å¸ƒå±€ç±»
             cardContainer.classList.remove('layout-4x5');
             
-            // µ±ÊÇ4x5²¼¾ÖÊ±Ìí¼ÓÌØÊâÑùÊ½Àà
+            // å½“æ˜¯4x5å¸ƒå±€æ—¶æ·»åŠ ç‰¹æ®Šæ ·å¼ç±»
             if (rows === 4 && cols === 5) {
                 cardContainer.classList.add('layout-4x5');
             }
@@ -230,22 +230,22 @@
                     const index = r * cols + c;
                     currentCards.push({ id: index, flipped: false, imagePath: null });
 
-                    // ´´½¨ÅÆÔªËØ
+                    // åˆ›å»ºç‰Œå…ƒç´ 
                     const card = document.createElement('div');
                     card.className = 'card-container';
                     card.innerHTML = `
                         <div class="card" data-index="${index}">
                             <div class="card-face card-back">
-                                <img src="${backImagePath}" class="card-img" alt="±³Ãæ">
+                                <img src="${backImagePath}" class="card-img" alt="èƒŒé¢">
                             </div>
                             <div class="card-face card-front">
-                                <img src="" class="card-img" alt="ÕıÃæ">
+                                <img src="" class="card-img" alt="æ­£é¢">
                             </div>
                         </div>
                     `;
                     row.appendChild(card);
 
-                    // °ó¶¨ÅÆµÄµã»÷ÊÂ¼ş
+                    // ç»‘å®šç‰Œçš„ç‚¹å‡»äº‹ä»¶
                     card.querySelector('.card').onclick = function() {
                         selectedCardIndex = index;
                         selectionPanel.style.display = 'block';
@@ -254,39 +254,39 @@
             }
         }
 
-        // ³õÊ¼»¯Ñ¡ÔñÃæ°å
+        // åˆå§‹åŒ–é€‰æ‹©é¢æ¿
         function initSelectionPanel() {
             selectionGrid.innerHTML = '';
             imagePaths.forEach((path, i) => {
                 const img = document.createElement('img');
                 img.src = path;
                 img.className = 'selection-img';
-                img.alt = `Í¼Æ¬${i+1}`;
+                img.alt = `å›¾ç‰‡${i+1}`;
                 img.onclick = function() {
                     if (selectedCardIndex === -1) return;
 
-                    // ¸üĞÂ¿¨Æ¬×´Ì¬
+                    // æ›´æ–°å¡ç‰‡çŠ¶æ€
                     currentCards[selectedCardIndex].flipped = true;
                     currentCards[selectedCardIndex].imagePath = path;
 
-                    // ·­×ªÅÆ²¢Ìæ»»Í¼Æ¬
+                    // ç¿»è½¬ç‰Œå¹¶æ›¿æ¢å›¾ç‰‡
                     const card = document.querySelector(`.card[data-index="${selectedCardIndex}"]`);
                     const frontImg = card.querySelector('.card-front img');
                     frontImg.src = path;
                     card.classList.add('card-flipped');
 
-                    // ¹Ø±ÕÃæ°å
+                    // å…³é—­é¢æ¿
                     selectionPanel.style.display = 'none';
                     selectedCardIndex = -1;
 
-                    // ±£´æÀúÊ·¼ÇÂ¼
+                    // ä¿å­˜å†å²è®°å½•
                     saveHistory();
                 };
                 selectionGrid.appendChild(img);
             });
         }
 
-        // ¸¨Öú¹¦ÄÜ£º±£´æÀúÊ·¡¢»ØÍË¡¢ÖØÖÃ
+        // è¾…åŠ©åŠŸèƒ½ï¼šä¿å­˜å†å²ã€å›é€€ã€é‡ç½®
         function saveHistory() {
             history.push(JSON.parse(JSON.stringify(currentCards)));
             if (history.length > 10) history.shift();
@@ -296,7 +296,7 @@
                 currentCards = history.pop();
                 refreshCards();
             } else {
-                alert('Ã»ÓĞ¿É»ØÍËµÄ²Ù×÷');
+                alert('æ²¡æœ‰å¯å›é€€çš„æ“ä½œ');
             }
         };
         resetBtn.onclick = function() {
@@ -321,7 +321,7 @@
             });
         }
 
-        // ²¼¾ÖÇĞ»»
+        // å¸ƒå±€åˆ‡æ¢
         layoutBtns.forEach(btn => {
             btn.onclick = function() {
                 const rows = parseInt(this.dataset.rows);
@@ -335,7 +335,7 @@
             };
         });
 
-        // ¹Ø±ÕÑ¡ÔñÃæ°å
+        // å…³é—­é€‰æ‹©é¢æ¿
         closeSelectionBtn.onclick = function() {
             selectionPanel.style.display = 'none';
             selectedCardIndex = -1;
@@ -343,3 +343,4 @@
     </script>
 </body>
 </html>
+
