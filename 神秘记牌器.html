@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=GB2312">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>神秘的记牌器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <style>
+        /* 基础样式，避免依赖Tailwind可能的冲突 */
+        .card-container {
+            perspective: 1000px;
+            display: inline-block;
+        }
+        .card {
+            width: 70px;
+            height: 90px;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+        .card-flipped {
+            transform: rotateY(180deg);
+        }
+        .card-face {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 6px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        .card-back {
+            background-color: #6B46C1;
+            z-index: 2; /* 背面初始在上方 */
+        }
+        .card-front {
+            transform: rotateY(180deg);
+            z-index: 1; /* 正面初始在下方 */
+        }
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        .card-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px; /* 行间距 */
+        }
+        .card-row > div {
+            margin: 0 7.5px; /* 列间距（总15px） */
+        }
+        #selectionPanel {
+            z-index: 100; /* 确保面板在最上层 */
+        }
+        #selectionGrid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
+        .selection-img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        /* 新增输入框样式优化 */
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #6B46C1;
+            box-shadow: 0 0 0 2px rgba(107, 70, 193, 0.2);
+        }
+        /* 4×5布局的特殊样式 */
+        .layout-4x5 .card {
+            width: 60px;
+            height: 80px;
+        }
+        .layout-4x5 .card-row {
+            margin-bottom: 2px; /* 行间距缩小为10 */
+        }
+        .layout-4x5 .card-row > div {
+            margin: 0 2px; /* 列间距缩小为2（总间距） */
+        }
+    </style>
+</head>
+<body>
+    <div id="loginSection" style="max-width: 300px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 4px;">
+        <h1 style="text-align: center; color: #6B46C1;">神秘的记牌器</h1>
+        <!-- 账号输入框 -->
+        <div class="input-group">
+            <label for="username">账号：</label>
+            <input type="text" id="username" placeholder="请输入账号">
+        </div>
+        <!-- 密码输入框 -->
+        <div class="input-group">
+            <label for="password">密码：</label>
+            <input type="password" id="password" placeholder="请输入密码">
+        </div>
+        <button id="loginBtn" style="width: 100%; padding: 8px; background: #6B46C1; color: white; border: none; border-radius: 4px; cursor: pointer;">登录</button>
+    </div>
+
+    <div id="cardSection" style="display: none; max-width: 800px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #6B46C1;">神秘的记牌器</h1>
+        <div style="margin: 15px 0;">
+            <button class="layout-btn" data-rows="2" data-cols="3" style="padding: 5px 10px; background: #6B46C1; color: white; border: none; border-radius: 4px; margin-right: 5px;">2×3</button>
+            <button class="layout-btn" data-rows="3" data-cols="3" style="padding: 5px 10px; background: #ccc; border: none; border-radius: 4px; margin-right: 5px;">3×3</button>
+            <button class="layout-btn" data-rows="3" data-cols="4" style="padding: 5px 10px; background: #ccc; border: none; border-radius: 4px; margin-right: 5px;">3×4</button>
+            <button class="layout-btn" data-rows="4" data-cols="4" style="padding: 5px 10px; background: #ccc; border: none; border-radius: 4px; margin-right: 5px;">4×4</button>
+            <button class="layout-btn" data-rows="4" data-cols="5" style="padding: 5px 10px; background: #ccc; border: none; border-radius: 4px; margin-right: 5px;">4×5</button>
+            <button id="backBtn" style="padding: 5px 10px; background: #718096; color: white; border: none; border-radius: 4px; margin-right: 5px;">回退</button>
+            <button id="resetBtn" style="padding: 5px 10px; background: #e53e3e; color: white; border: none; border-radius: 4px;">重置</button>
+        </div>
+        <div id="cardContainer"></div>
+
+        <!-- 选择面板 -->
+        <div id="selectionPanel" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);">
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; max-width: 500px; width: 90%;">
+                <h3>选择图片（5×5）</h3>
+                <div id="selectionGrid"></div>
+                <button id="closeSelectionBtn" style="width: 100%; padding: 8px; margin-top: 10px; background: #ccc; border: none; border-radius: 8px;">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 图片路径配置
+        const backImagePath = "imgs/00-背面.jpg";
+        const imagePaths = [
+            "imgs/01-选美皇后.jpg",
+            "imgs/02-一代天后.jpg",
+            "imgs/03-紫霞仙子.jpg",
+            "imgs/04-柳飘飘.jpg",
+            "imgs/05-聂小倩.jpg",
+            "imgs/06-阿诗玛.jpg",
+            "imgs/07-白素贞.jpg",
+            "imgs/08-丫蛋儿.jpg",
+            "imgs/09-海燕.jpg",
+            "imgs/10-秋菊.jpg",
+            "imgs/11-童心.jpg",
+            "imgs/12-新娘子.jpg",
+            "imgs/13-奕君.jpg",
+            "imgs/14-红衣服.jpg",
+            "imgs/15-红衣教主.jpg",
+            "imgs/16-唱戏.jpg",
+            "imgs/17-静静.jpg",
+            "imgs/18-淑珍.jpg",
+            "imgs/19-港星.jpg",
+            "imgs/20-高启兰.jpg",
+            "imgs/21-白纱.jpg",
+            "imgs/22-陈书婷.jpg",
+            "imgs/23-古丽.jpg",
+            "imgs/24-黑纱.jpg",
+            "imgs/25-英姿.jpg"
+        ];
+
+        // 全局变量
+        let currentCards = [];
+        let selectedCardIndex = -1;
+        let history = [];
+        let currentRows = 2;
+        let currentCols = 3;
+
+        // DOM元素
+        const loginSection = document.getElementById('loginSection');
+        const cardSection = document.getElementById('cardSection');
+        const loginBtn = document.getElementById('loginBtn');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const cardContainer = document.getElementById('cardContainer');
+        const resetBtn = document.getElementById('resetBtn');
+        const backBtn = document.getElementById('backBtn');
+        const selectionPanel = document.getElementById('selectionPanel');
+        const closeSelectionBtn = document.getElementById('closeSelectionBtn');
+        const selectionGrid = document.getElementById('selectionGrid');
+        const layoutBtns = document.querySelectorAll('.layout-btn');
+
+        // 登录功能
+        loginBtn.onclick = function() {
+            if (usernameInput.value === 'admin' && passwordInput.value === '147258') {
+                loginSection.style.display = 'none';
+                cardSection.style.display = 'block';
+                createCards(2, 3);
+                initSelectionPanel();
+            } else {
+                alert('账号或密码错误');
+            }
+        };
+
+        // 创建牌
+        function createCards(rows, cols) {
+            // 移除之前可能添加的4x5布局类
+            cardContainer.classList.remove('layout-4x5');
+            
+            // 当是4x5布局时添加特殊样式类
+            if (rows === 4 && cols === 5) {
+                cardContainer.classList.add('layout-4x5');
+            }
+            
+            cardContainer.innerHTML = '';
+            currentCards = [];
+
+            for (let r = 0; r < rows; r++) {
+                const row = document.createElement('div');
+                row.className = 'card-row';
+                cardContainer.appendChild(row);
+
+                for (let c = 0; c < cols; c++) {
+                    const index = r * cols + c;
+                    currentCards.push({ id: index, flipped: false, imagePath: null });
+
+                    // 创建牌元素
+                    const card = document.createElement('div');
+                    card.className = 'card-container';
+                    card.innerHTML = `
+                        <div class="card" data-index="${index}">
+                            <div class="card-face card-back">
+                                <img src="${backImagePath}" class="card-img" alt="背面">
+                            </div>
+                            <div class="card-face card-front">
+                                <img src="" class="card-img" alt="正面">
+                            </div>
+                        </div>
+                    `;
+                    row.appendChild(card);
+
+                    // 绑定牌的点击事件
+                    card.querySelector('.card').onclick = function() {
+                        selectedCardIndex = index;
+                        selectionPanel.style.display = 'block';
+                    };
+                }
+            }
+        }
+
+        // 初始化选择面板
+        function initSelectionPanel() {
+            selectionGrid.innerHTML = '';
+            imagePaths.forEach((path, i) => {
+                const img = document.createElement('img');
+                img.src = path;
+                img.className = 'selection-img';
+                img.alt = `图片${i+1}`;
+                img.onclick = function() {
+                    if (selectedCardIndex === -1) return;
+
+                    // 更新卡片状态
+                    currentCards[selectedCardIndex].flipped = true;
+                    currentCards[selectedCardIndex].imagePath = path;
+
+                    // 翻转牌并替换图片
+                    const card = document.querySelector(`.card[data-index="${selectedCardIndex}"]`);
+                    const frontImg = card.querySelector('.card-front img');
+                    frontImg.src = path;
+                    card.classList.add('card-flipped');
+
+                    // 关闭面板
+                    selectionPanel.style.display = 'none';
+                    selectedCardIndex = -1;
+
+                    // 保存历史记录
+                    saveHistory();
+                };
+                selectionGrid.appendChild(img);
+            });
+        }
+
+        // 辅助功能：保存历史、回退、重置
+        function saveHistory() {
+            history.push(JSON.parse(JSON.stringify(currentCards)));
+            if (history.length > 10) history.shift();
+        }
+        backBtn.onclick = function() {
+            if (history.length > 0) {
+                currentCards = history.pop();
+                refreshCards();
+            } else {
+                alert('没有可回退的操作');
+            }
+        };
+        resetBtn.onclick = function() {
+            saveHistory();
+            currentCards.forEach(card => {
+                card.flipped = false;
+                card.imagePath = null;
+            });
+            refreshCards();
+        };
+        function refreshCards() {
+            currentCards.forEach((card, index) => {
+                const cardEl = document.querySelector(`.card[data-index="${index}"]`);
+                const frontImg = cardEl.querySelector('.card-front img');
+                if (card.flipped && card.imagePath) {
+                    frontImg.src = card.imagePath;
+                    cardEl.classList.add('card-flipped');
+                } else {
+                    frontImg.src = '';
+                    cardEl.classList.remove('card-flipped');
+                }
+            });
+        }
+
+        // 布局切换
+        layoutBtns.forEach(btn => {
+            btn.onclick = function() {
+                const rows = parseInt(this.dataset.rows);
+                const cols = parseInt(this.dataset.cols);
+                layoutBtns.forEach(b => b.style.background = '#ccc');
+                this.style.background = '#6B46C1';
+                saveHistory();
+                currentRows = rows;
+                currentCols = cols;
+                createCards(rows, cols);
+            };
+        });
+
+        // 关闭选择面板
+        closeSelectionBtn.onclick = function() {
+            selectionPanel.style.display = 'none';
+            selectedCardIndex = -1;
+        };
+    </script>
+</body>
+</html>
