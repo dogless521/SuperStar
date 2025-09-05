@@ -106,22 +106,8 @@
     </style>
 </head>
 <body>
-    <div id="loginSection" style="max-width: 300px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 4px;">
-        <h1 style="text-align: center; color: #6B46C1;">神秘的记牌器</h1>
-        <!-- 账号输入框 -->
-        <div class="input-group">
-            <label for="username">账号：</label>
-            <input type="text" id="username" placeholder="请输入账号">
-        </div>
-        <!-- 密码输入框 -->
-        <div class="input-group">
-            <label for="password">密码：</label>
-            <input type="password" id="password" placeholder="请输入密码">
-        </div>
-        <button id="loginBtn" style="width: 100%; padding: 8px; background: #6B46C1; color: white; border: none; border-radius: 4px; cursor: pointer;">登录</button>
-    </div>
-
-    <div id="cardSection" style="display: none; max-width: 800px; margin: 0 auto; padding: 20px;">
+    <!-- 直接显示记牌器主界面，移除登录部分 -->
+    <div id="cardSection" style="max-width: 800px; margin: 0 auto; padding: 20px;">
         <h1 style="color: #6B46C1;">神秘的记牌器</h1>
         <div style="margin: 15px 0;">
             <button class="layout-btn" data-rows="2" data-cols="3" style="padding: 5px 10px; background: #6B46C1; color: white; border: none; border-radius: 4px; margin-right: 5px;">2×3</button>
@@ -183,11 +169,7 @@
         let currentCols = 3;
 
         // DOM元素
-        const loginSection = document.getElementById('loginSection');
         const cardSection = document.getElementById('cardSection');
-        const loginBtn = document.getElementById('loginBtn');
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
         const cardContainer = document.getElementById('cardContainer');
         const resetBtn = document.getElementById('resetBtn');
         const backBtn = document.getElementById('backBtn');
@@ -196,16 +178,10 @@
         const selectionGrid = document.getElementById('selectionGrid');
         const layoutBtns = document.querySelectorAll('.layout-btn');
 
-        // 登录功能
-        loginBtn.onclick = function() {
-            if (usernameInput.value === 'admin' && passwordInput.value === '147258') {
-                loginSection.style.display = 'none';
-                cardSection.style.display = 'block';
-                createCards(2, 3);
-                initSelectionPanel();
-            } else {
-                alert('账号或密码错误');
-            }
+        // 页面加载时直接初始化记牌器
+        window.onload = function() {
+            createCards(2, 3);
+            initSelectionPanel();
         };
 
         // 创建牌
@@ -343,5 +319,3 @@
     </script>
 </body>
 </html>
-
-
